@@ -57,37 +57,23 @@ const algo = (setMinCost) => {
               const newCost =
                 dist[homeNode][prevNode] + cost[[prevNode, prevRoute, srcId]];
               const currentCost = cost[[homeNode, currentRoute, srcId]];
-
-              let paths = possiblePath[
-                [prevNode, prevRoute, srcId]
-              ].map((item) => [homeNode, ...item]);
-
               if (newCost < currentCost) {
                 cost[[homeNode, currentRoute, srcId]] = newCost;
-                // possiblePath[homeNode] = [];
-                // possiblePath[homeNode].push(prevNode);
-                possiblePath[[homeNode, currentRoute, srcId]] = paths;
-                // console.log(possiblePath);
-                console.log(paths);
+                possiblePath[homeNode] = [];
+                possiblePath[homeNode].push(prevNode);
               } else if (newCost === currentCost) {
-                // possiblePath[homeNode].push(prevNode);
-                //  ----------------
-                possiblePath[[homeNode, currentRoute, srcId]].push(...paths); // to append more than one path with same distance
-                // console.log(possiblePath);
+                possiblePath[homeNode].push(prevNode);
               }
+              //   cost[[homeNode, currentRoute, srcId]] = min(
+              //     cost[[homeNode, currentRoute, srcId]],
+              //     dist[homeNode][prevNode] + cost[[prevNode, prevRoute, srcId]]
+              //   );
             } else {
               // if for the current route, when starting from homeNode is visited for the first
               cost[[homeNode, currentRoute, srcId]] =
                 dist[homeNode][prevNode] + cost[[prevNode, prevRoute, srcId]];
-              // possiblePath[homeNode] = [];
-              // possiblePath[homeNode].push(prevNode);
-              let paths = possiblePath[
-                [prevNode, prevRoute, srcId]
-              ].map((item) => [homeNode, ...item]);
-
-              possiblePath[[homeNode, currentRoute, srcId]] = paths;
-              console.log(paths);
-              // console.log(possiblePath);
+              possiblePath[homeNode] = [];
+              possiblePath[homeNode].push(prevNode);
             }
             // console.log(homeNode, prevNode, currentRoute, prevRoute);
           }
@@ -99,10 +85,8 @@ const algo = (setMinCost) => {
         console.log(currentRoute, homeNode);
         cost[[homeNode, currentRoute, srcId]] = dist[homeNode][srcId];
 
-        possiblePath[[homeNode, currentRoute, srcId]] = [];
-        possiblePath[[homeNode, currentRoute, srcId]].push([homeNode, srcId]);
-        console.log(possiblePath[[homeNode, currentRoute, srcId]]);
-        // possiblePath[homeNode].push(srcId);
+        possiblePath[homeNode] = [];
+        possiblePath[homeNode].push(srcId);
       }
     }
   }
@@ -117,42 +101,27 @@ const algo = (setMinCost) => {
       const newCost =
         dist[homeNode][prevNode] + cost[[prevNode, prevRoute, srcId]];
       const currentCost = cost[[homeNode, currentRoute, srcId]];
-
-      let paths = possiblePath[[prevNode, prevRoute, srcId]].map((item) => [
-        homeNode,
-        ...item,
-      ]);
-
       if (newCost < currentCost) {
         cost[[homeNode, currentRoute, srcId]] = newCost;
-        // possiblePath[homeNode] = [];
-        // possiblePath[homeNode].push(prevNode);
-
-        possiblePath[[homeNode, currentRoute, srcId]] = paths;
-        console.log(possiblePath);
+        possiblePath[homeNode] = [];
+        possiblePath[homeNode].push(prevNode);
       } else if (newCost === currentCost) {
-        // possiblePath[homeNode].push(prevNode);
-        // --------------------
-        possiblePath[[homeNode, currentRoute, srcId]].push(...paths); // to append more than one path with same distance
-        // console.log(possiblePath);
+        possiblePath[homeNode].push(prevNode);
       }
+      //   cost[[homeNode, currentRoute, srcId]] = min(
+      //     cost[[homeNode, currentRoute, srcId]],
+      //     dist[homeNode][prevNode] + cost[[prevNode, prevRoute, srcId]]
+      //   );
     } else {
       cost[[homeNode, currentRoute, srcId]] =
         dist[homeNode][prevNode] + cost[[prevNode, prevRoute, srcId]];
-      // possiblePath[homeNode] = [];
-      // possiblePath[homeNode].push(prevNode);
-      let paths = possiblePath[[prevNode, prevRoute, srcId]].map((item) => [
-        homeNode,
-        ...item,
-      ]);
-      possiblePath[[homeNode, currentRoute, srcId]] = paths;
-      console.log(possiblePath);
+      possiblePath[homeNode] = [];
+      possiblePath[homeNode].push(prevNode);
     }
     // console.log(homeNode, prevNode, currentRoute, prevRoute);
   }
   console.log(cost[[homeNode, currentRoute, srcId]]);
-  console.log(possiblePath[[0, ...currentRoute, 0]]);
-  console.log(currentRoute);
+  console.log(possiblePath);
 
   setMinCost(cost[[homeNode, currentRoute, srcId]]);
   //   const path = [];

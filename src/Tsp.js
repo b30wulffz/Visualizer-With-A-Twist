@@ -122,6 +122,123 @@ const algo = (setMinCost) => {
   //   }
 };
 
+class QElement {
+  constructor(element, priority) {
+    this.element = element;
+    this.priority = priority;
+  }
+}
+
+// PriorityQueue class
+class PriorityQueue {
+  // An array is used to implement priority
+  constructor() {
+    this.items = [];
+  }
+  enqueue(element, priority) {
+    // creating object from queue element
+    var qElement = new QElement(element, priority);
+    var contain = false;
+
+    // iterating through the entire
+    // item array to add element at the
+    // correct location of the Queue
+    for (var i = 0; i < this.items.length; i++) {
+      if (this.items[i].priority > qElement.priority) {
+        // Once the correct location is found it is
+        // enqueued
+        this.items.splice(i, 0, qElement);
+        contain = true;
+        break;
+      }
+    }
+
+    // if the element have the highest priority
+    // it is added at the end of the queue
+    if (!contain) {
+      this.items.push(qElement);
+    }
+  }
+  dequeue() {
+    // return the dequeued element
+    // and remove it.
+    // if the queue is empty
+    // returns Underflow
+    if (this.isEmpty()) return "Underflow";
+    return this.items.shift();
+  }
+  isEmpty() {
+    // return true if the queue is empty.
+    return this.items.length == 0;
+  }
+}
+
+const getMST = (nodes, dist, srcId) => {
+  let tree = {};
+  let allDist = new PriorityQueue();
+  let visited = [],
+    unvisited = [];
+
+  for (let i = 0; i < nodes.length; i++) {
+    unvisited.push(nodes[i]);
+  }
+
+  tree[srcId] = -1;
+  visited.push(srcId);
+  unvisited = unvisited.filter((item) => item != srcId);
+  for (let i = 0; i < dist[srcId].length; i++) {
+    if (nodes[i] != srcId) {
+      allDist.enqueue(nodes[i], dist[srcId][i]); // storing edge weights between the src vertex and its neighbours
+    }
+  }
+
+  while (unvisited.length > 0) {
+    let nearestVertex = allDist.dequeue().element;
+    unvisited = unvisited.filter((item) => item != nearestVertex);
+    visited.push(nearestVertex);
+
+    // inserting neighbouring edges
+    for (let i = 0; i < dist[srcId].length; i++) {
+      if (!visited.includes(nodes[i])) {
+        allDist.enqueue(nodes[i], dist[srcId][i]); // storing edge weights between the src vertex and its neighbours
+      }
+    }
+
+    // removing cycle edges
+    for (let i = allDist.items.length - 1; i >= 0; i--) {
+      if (visited.includes(allDist.items[i].element)) {
+        // extracting value of neighbouring node
+        allDist.items.splice(i, 1);
+        console.log(i);
+      }
+    }
+    console.log(unvisited);
+    console.log(visited);
+    if (visited.length > 1000) {
+      break;
+    }
+  }
+
+  console.log(unvisited);
+  console.log(visited);
+  console.log(tree);
+  console.log(allDist.dequeue());
+  console.log(allDist.dequeue());
+  console.log(allDist.dequeue());
+};
+
+const approxTSP = (setMinCost) => {
+  const dist = [
+    [0, 12, 7, 16],
+    [8, 0, 20, 5],
+    [21, 6, 0, 18],
+    [7, 11, 6, 0],
+  ];
+  const srcId = 0;
+  const nodes = [0, 1, 2, 3];
+  getMST(nodes, dist, srcId);
+};
+
 const Tsp = (props) => {
   const [mincost, setMinCost] = useState(-1);
   return (
@@ -139,14 +256,25 @@ const Tsp = (props) => {
         <Grid item xs>
           <TspSvg style={{ width: "400px" }} />
         </Grid>
-        <Grid item xs>
-          <Button
-            onClick={() => algo(setMinCost)}
-            variant="contained"
-            color="secondary"
-          >
-            Execute
-          </Button>
+        <Grid container item xs>
+          <Grid item>
+            <Button
+              onClick={() => algo(setMinCost)}
+              variant="contained"
+              color="secondary"
+            >
+              Execute DP Approach
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              onClick={() => approxTSP(setMinCost)}
+              variant="contained"
+              color="secondary"
+            >
+              Execute Approximation Approach
+            </Button>
+          </Grid>
         </Grid>
         <Grid item>
           {mincost !== -1 ? (

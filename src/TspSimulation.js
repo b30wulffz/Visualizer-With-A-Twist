@@ -15,12 +15,39 @@ import {
   Tabs,
   Tab,
   Paper,
+  Backdrop,
+  CircularProgress,
+  Card,
 } from "@material-ui/core";
+import { useSpring, animated } from "react-spring";
 
 import DpTSP from "./DpTSP";
 import ApproxTSP from "./ApproxTSP";
 
-const useStyles = makeStyles({});
+const useStyles = makeStyles((theme) => ({
+  graphContainer: {
+    display: "flex",
+    justifyContent: "center",
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: "#fff",
+  },
+  button: {
+    width: "250px",
+    padding: "10px",
+  },
+  resultBlock: {
+    // background: "#B5EF8A",
+    // background: "#1FDCDB",#F95D92
+    background: "#F95D92",
+    padding: "20px",
+    textAlign: "center",
+    fontSize: "25px",
+    color: "#ffffff",
+    // justifyContent: "center",
+  },
+}));
 
 const TspGraph = (props) => {
   //   const nodes = [
@@ -60,11 +87,11 @@ const TspGraph = (props) => {
   );
 };
 
-const generateNodes = (count, setNodes, setLinks) => {
+const generateNodes = (count, setNodes, setLinks, height, width) => {
   const nodes = [];
   for (let i = 0; i < count; i++) {
-    let x_val = 25 + (parseInt(Math.random() * 1000) % 450);
-    let y_val = 25 + (parseInt(Math.random() * 1000) % 450);
+    let x_val = 25 + (parseInt(Math.random() * 1000) % (width - 50));
+    let y_val = 25 + (parseInt(Math.random() * 1000) % (height - 50));
     nodes.push({
       x: x_val,
       y: y_val,
@@ -174,7 +201,9 @@ function a11yProps(index) {
 }
 
 const TspSimulation = () => {
-  const [nodeCount, setNodeCount] = useState(4);
+  const classes = useStyles();
+
+  const [nodeCount, setNodeCount] = useState(6);
   const [nodes, setNodes] = useState([]);
   const [linksMethod1, setLinksMethod1] = useState([]);
   const [linksMethod2, setLinksMethod2] = useState([]);
@@ -183,8 +212,14 @@ const TspSimulation = () => {
   const [timeMethod1, setTimeMethod1] = useState(-1);
   const [timeMethod2, setTimeMethod2] = useState(-1);
 
+  const [loader, setLoader] = useState(false);
+
+  const height = 400;
+  const width = 400;
+
   useEffect(() => {
-    generateNodes(nodeCount, setNodes, setLinksMethod1);
+    generateNodes(nodeCount, setNodes, setLinksMethod1, height, width);
+    generateNodes(nodeCount, setNodes, setLinksMethod2, height, width);
   }, []);
 
   const [curTabInd, setCurTabInd] = React.useState(0);
@@ -192,6 +227,44 @@ const TspSimulation = () => {
   const changeTab = (event, newValue) => {
     setCurTabInd(newValue);
   };
+
+  // for animated time and cost
+  const propsCostM1 = useSpring({
+    number: costMethod1,
+    from: { number: 0 },
+  });
+
+  const propsCostM2 = useSpring({
+    number: costMethod2,
+    from: { number: 0 },
+  });
+
+  const propsTimeM1 = useSpring({
+    number: timeMethod1,
+    from: { number: 0 },
+  });
+
+  const propsTimeM2 = useSpring({
+    number: timeMethod2,
+    from: { number: 0 },
+  });
+
+  // useEffect(() => {
+  //   if (loaderM1 === true) {
+  //     setTimeout(() => {
+  //       DpTSP(nodes, setLinksMethod1);
+  //       setLoaderM1(false);
+  //     }, 0);
+  //     // var promise = new Promise((resolve, reject) => {
+  //     //   DpTSP(nodes, setLinksMethod1);
+  //     //   resolve("Promise resolved successfully");
+  //     // });
+
+  //     // promise.then((result) => {
+  //     //   setLoaderM1(false);
+  //     // });
+  //   }
+  // }, [loaderM1]);
 
   return (
     <div>
@@ -204,23 +277,23 @@ const TspSimulation = () => {
           aria-label="disabled tabs example"
           variant="fullWidth"
         >
-          <Tab label="Active" />]
-          <Tab label="Active" />
+          <Tab label="Bruteforce TSP" />]
+          <Tab label="Approximation TSP" />
         </Tabs>
       </Paper>
       <TabPanel value={curTabInd} index={0}>
-        <Grid container justify="center" alignItems="center">
-          <Grid item xs={8}>
+        <Grid container justify="center" alignItems="center" spacing={2}>
+          <Grid item xs={12} md={8} className={classes.graphContainer}>
             <TspGraph
-              height={500}
-              width={500}
+              height={height}
+              width={width}
               nodes={nodes}
               links={linksMethod1}
             />
           </Grid>
           <Grid item xs={8}>
             <Slider
-              defaultValue={4}
+              defaultValue={6}
               aria-labelledby="discrete-slider"
               valueLabelDisplay="auto"
               step={1}
@@ -244,10 +317,17 @@ const TspSimulation = () => {
                 color="primary"
                 onClick={() => {
                   setLinksMethod2([]);
-                  generateNodes(nodeCount, setNodes, setLinksMethod1);
+                  generateNodes(
+                    nodeCount,
+                    setNodes,
+                    setLinksMethod1,
+                    height,
+                    width
+                  );
                 }}
+                className={classes.button}
               >
-                Generate
+                Generate Random Nodes
               </Button>
             </Grid>
             <Grid item>
@@ -255,29 +335,70 @@ const TspSimulation = () => {
                 variant="contained"
                 color="primary"
                 onClick={() => {
-                  //   dpBasedTsp(nodeCount, setNodes);
-                  DpTSP(nodes, setLinksMethod1);
+                  setLoader(true);
+                  setTimeout(() => {
+                    DpTSP(
+                      nodes,
+                      setLinksMethod1,
+                      setCostMethod1,
+                      setTimeMethod1
+                    );
+                    setLoader(false);
+                  }, 500);
                 }}
+                className={classes.button}
               >
-                DP Approach
+                Generate Path
               </Button>
+            </Grid>
+          </Grid>
+          <Grid container item spacing={4}>
+            <Grid item xs>
+              <Paper className={classes.resultBlock} elevation={0}>
+                Cost:{" "}
+                {costMethod1 != -1 ? (
+                  <>
+                    <animated.span>
+                      {propsCostM1.number.interpolate((val) => Math.floor(val))}
+                    </animated.span>{" "}
+                    Units
+                  </>
+                ) : (
+                  "N/A"
+                )}
+              </Paper>
+            </Grid>
+            <Grid item xs>
+              <Paper className={classes.resultBlock} elevation={0}>
+                Time Taken:{" "}
+                {timeMethod1 != -1 ? (
+                  <>
+                    <animated.span>
+                      {propsTimeM1.number.interpolate((val) => Math.floor(val))}
+                    </animated.span>{" "}
+                    ms
+                  </>
+                ) : (
+                  "N/A"
+                )}
+              </Paper>
             </Grid>
           </Grid>
         </Grid>
       </TabPanel>
       <TabPanel value={curTabInd} index={1}>
-        <Grid container justify="center" alignItems="center">
-          <Grid item xs={8}>
+        <Grid container justify="center" alignItems="center" spacing={2}>
+          <Grid item xs={12} md={8} className={classes.graphContainer}>
             <TspGraph
-              height={500}
-              width={500}
+              height={height}
+              width={width}
               nodes={nodes}
               links={linksMethod2}
             />
           </Grid>
           <Grid item xs={8}>
             <Slider
-              defaultValue={4}
+              defaultValue={6}
               aria-labelledby="discrete-slider"
               valueLabelDisplay="auto"
               step={1}
@@ -301,10 +422,17 @@ const TspSimulation = () => {
                 color="primary"
                 onClick={() => {
                   setLinksMethod1([]);
-                  generateNodes(nodeCount, setNodes, setLinksMethod2);
+                  generateNodes(
+                    nodeCount,
+                    setNodes,
+                    setLinksMethod2,
+                    height,
+                    width
+                  );
                 }}
+                className={classes.button}
               >
-                Generate
+                Generate Random Nodes
               </Button>
             </Grid>
             <Grid item>
@@ -312,16 +440,60 @@ const TspSimulation = () => {
                 variant="contained"
                 color="primary"
                 onClick={() => {
-                  //   dpBasedTsp(nodeCount, setNodes);
-                  ApproxTSP(nodes, setLinksMethod2);
+                  setLoader(true);
+                  setTimeout(() => {
+                    ApproxTSP(
+                      nodes,
+                      setLinksMethod2,
+                      setCostMethod2,
+                      setTimeMethod2
+                    );
+                    setLoader(false);
+                  }, 500);
                 }}
+                className={classes.button}
               >
-                Approx TSP
+                Generate Path
               </Button>
+            </Grid>
+          </Grid>
+          <Grid container item spacing={4}>
+            <Grid item xs>
+              <Paper className={classes.resultBlock} elevation={0}>
+                Cost:{" "}
+                {costMethod2 != -1 ? (
+                  <>
+                    <animated.span>
+                      {propsCostM2.number.interpolate((val) => Math.floor(val))}
+                    </animated.span>{" "}
+                    Units
+                  </>
+                ) : (
+                  "N/A"
+                )}
+              </Paper>
+            </Grid>
+            <Grid item xs>
+              <Paper className={classes.resultBlock} elevation={0}>
+                Time Taken:{" "}
+                {timeMethod2 != -1 ? (
+                  <>
+                    <animated.span>
+                      {propsTimeM2.number.interpolate((val) => Math.floor(val))}
+                    </animated.span>{" "}
+                    ms
+                  </>
+                ) : (
+                  "N/A"
+                )}
+              </Paper>
             </Grid>
           </Grid>
         </Grid>
       </TabPanel>
+      <Backdrop className={classes.backdrop} open={loader}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </div>
   );
 };

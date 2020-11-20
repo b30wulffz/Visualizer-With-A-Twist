@@ -38,19 +38,13 @@ class PriorityQueue {
 }
 
 const plotEdges = (setLinks, nodes, edgeArray) => {
-  // const links = [
-  //     { source: nodes[0], target: nodes[1] },
-  //     { source: nodes[1], target: nodes[2] },
-  //     { source: nodes[2], target: nodes[0] },
-  //   ];
-
   const links = [];
   for (let i = 0; i < edgeArray.length - 1; i++) {
     const curNodeInd = edgeArray[i];
     const nextNodeInd = edgeArray[i + 1];
     links.push({ source: nodes[curNodeInd], target: nodes[nextNodeInd] });
   }
-  console.log(links);
+  // console.log(links);
   setLinks(links);
 };
 
@@ -83,7 +77,7 @@ const getMST = (nodes, dist, srcId) => {
     unvisited = unvisited.filter((item) => item != nearestVertex);
     visited.push(nearestVertex);
 
-    console.log(smallestEdge);
+    // console.log(smallestEdge);
 
     // appending to tree
     if (typeof tree[parentVertex] === "undefined") {
@@ -93,8 +87,8 @@ const getMST = (nodes, dist, srcId) => {
 
     // inserting neighbouring edges
     let childVertexId = nearestVertex;
-    console.log(childVertexId);
-    console.log(dist[childVertexId]);
+    // console.log(childVertexId);
+    // console.log(dist[childVertexId]);
     for (let i = 0; i < dist[childVertexId].length; i++) {
       if (!visited.includes(nodes[i])) {
         allDist.enqueue([childVertexId, nodes[i]], dist[childVertexId][i]); // storing edge weights between the src vertex and its neighbours
@@ -106,16 +100,16 @@ const getMST = (nodes, dist, srcId) => {
       if (visited.includes(allDist.items[i].element)) {
         // extracting value of neighbouring node
         allDist.items.splice(i, 1);
-        console.log(i);
+        // console.log(i);
       }
     }
-    console.log(unvisited);
-    console.log(visited);
+    // console.log(unvisited);
+    // console.log(visited);
   }
 
-  console.log(unvisited);
-  console.log(visited);
-  console.log(tree);
+  // console.log(unvisited);
+  // console.log(visited);
+  // console.log(tree);
   return tree;
 };
 
@@ -130,7 +124,7 @@ const preorder = (tree, parent, visited) => {
   }
 };
 
-const ApproxTSP = (nodesList, setLinks) => {
+const ApproxTSP = (nodesList, setLinks, setCost, setTime) => {
   const nodeCount = nodesList.length;
   const srcId = 0;
   const nodes = [];
@@ -154,16 +148,31 @@ const ApproxTSP = (nodesList, setLinks) => {
     dist.push(distFromSrc);
   }
 
+  const start = window.performance.now();
   let tree = getMST(nodes, dist, srcId);
 
   // generating hamiltonian tour
   //get preorder traversal for unique nodes
-  console.log(tree);
+  // console.log(tree);
   let tour = [];
   preorder(tree, srcId, tour);
   tour.push(srcId);
-  console.log(tour);
+  // console.log(tour);
+  // calculating cost
+  let cost = 0;
+  for (let i = 0; i < tour.length - 1; i++) {
+    const currentNode = tour[i];
+    const nextNode = tour[i + 1];
+    cost += dist[currentNode][nextNode];
+  }
+
+  const end = window.performance.now();
+
   plotEdges(setLinks, nodesList, tour);
+  setCost(Math.ceil(cost));
+  setTime(Math.ceil(end - start));
+
+  return 1;
 };
 
 export default ApproxTSP;

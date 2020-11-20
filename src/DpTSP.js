@@ -159,7 +159,10 @@ const DpTSPAlgo = (dist, srcId, nodes) => {
   // console.log(possiblePath[[0, ...currentRoute, 0]]);
   // console.log(currentRoute);
 
-  return possiblePath[[0, ...currentRoute, 0]];
+  return [
+    possiblePath[[0, ...currentRoute, 0]],
+    cost[[homeNode, currentRoute, srcId]],
+  ];
 
   // setMinCost(cost[[homeNode, currentRoute, srcId]]);
   // //   const path = [];
@@ -168,7 +171,7 @@ const DpTSPAlgo = (dist, srcId, nodes) => {
   // //   }
 };
 
-const DpTSP = (nodesList, setLinks) => {
+const DpTSP = (nodesList, setLinks, setCost, setTime) => {
   const nodeCount = nodesList.length;
   const srcId = 0;
   const nodes = [];
@@ -194,11 +197,20 @@ const DpTSP = (nodesList, setLinks) => {
 
   // generating hamiltonian tour
 
-  const tours = DpTSPAlgo(dist, srcId, nodes);
-  const tour = tours[0];
+  const start = window.performance.now();
+  const [tours, cost] = DpTSPAlgo(dist, srcId, nodes);
+  const end = window.performance.now();
+
+  const tour = tours[0]; // choosing one among multiple paths
+
   // console.log(tours);
   // console.log(tour);
   plotEdges(setLinks, nodesList, tour);
+
+  setCost(Math.ceil(cost));
+  setTime(Math.ceil(end - start));
+
+  return 1;
 };
 
 export default DpTSP;

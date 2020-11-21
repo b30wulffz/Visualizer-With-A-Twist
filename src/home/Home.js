@@ -7,6 +7,7 @@ import {
   Typography,
   makeStyles,
 } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 import ParticlesBg from "particles-bg";
 import logoImage from "./logo.svg";
 
@@ -91,6 +92,7 @@ const useStyles = makeStyles((theme) => ({
 
 const HomeComponent = () => {
   const classes = useStyles();
+  const history = useHistory();
 
   const animations = ["ball", "square", "polygon"];
   const [currentAnimation, setCurrentAnimation] = useState(
@@ -111,7 +113,10 @@ const HomeComponent = () => {
         </div>
         <div className={classes.tilesSection}>
           <div className={classes.tilesPart}>
-            <div className={`${classes.tile} ${classes.tile1}`}>
+            <div
+              className={`${classes.tile} ${classes.tile1}`}
+              onClick={() => history.push("/tsp")}
+            >
               Travelling Salesman Problem
             </div>
             <div className={`${classes.tile} ${classes.tile2}`}>

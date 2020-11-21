@@ -12,6 +12,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import "./App.css";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 // import * as loader from "./components/coder-coding.json";
 import * as loader from "./components/cute-cat.json";
@@ -19,6 +20,7 @@ import * as loader from "./components/cute-cat.json";
 import Home from "./home/Home";
 import TspSimulation from "./TspSimulation";
 import LGSimulation from "./lerchs-grossman/LGSimulation";
+import TspArticle from "./algorithms/tsp/Article";
 
 // height: 100vh;
 // width: 100%;
@@ -73,6 +75,10 @@ function App() {
       <Switch>
         <Route path="/" exact>
           <Home />
+        </Route>
+        <Route path="/tsp" exact>
+          <TspArticle />
+          <Footer />
         </Route>
         <Route path="/tsp-sim" exact>
           <TspSimulation />

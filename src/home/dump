@@ -1,0 +1,100 @@
+import React, { useEffect, useState } from "react";
+import {
+  Card,
+  CardContent,
+  Grid,
+  Paper,
+  Typography,
+  makeStyles,
+} from "@material-ui/core";
+import ParticlesBg from "particles-bg";
+import logoImage from "./logo.svg";
+
+const useStyles = makeStyles((theme) => ({
+  logoImage: {},
+  root: {
+    height: "100vh",
+  },
+  algoInfoBody: {
+    width: "80vw",
+  },
+  algotile: {
+    width: "100px",
+    padding: "20px",
+    background: "red",
+  },
+}));
+
+const HomeComponent = () => {
+  const classes = useStyles();
+
+  const animations = ["ball", "square", "polygon"];
+  const [currentAnimation, setCurrentAnimation] = useState(
+    animations[Math.floor(Math.random() * animations.length)]
+  );
+
+  //   useEffect(() => {
+  //     setCurrentAnimation(
+  //       animations[Math.floor(Math.random() * animations.length)]
+  //     );
+  //   }, []);
+
+  return (
+    <>
+      <Grid
+        container
+        className={classes.root}
+        justify="center"
+        alignItems="stretch"
+        direction="column"
+      >
+        <Grid item>
+          <Typography>Select an algo, and learn more about it!</Typography>
+        </Grid>
+        <Grid
+          item
+          container
+          alignItems="center"
+          justify="center"
+          direction="column"
+          className={classes.algoInfoBody}
+        >
+          {/* Test */}
+          <Grid
+            container
+            item
+            xs={6}
+            alignItems="center"
+            justify="space-around"
+            spacing={6}
+          >
+            <Grid item xs={6}>
+              <Paper className={classes.algotile}>Algo</Paper>
+            </Grid>
+            <Grid item xs={6}>
+              <Paper className={classes.algotile}>Algo</Paper>
+            </Grid>
+          </Grid>
+          <Grid
+            container
+            item
+            xs={6}
+            alignItems="center"
+            justify="space-around"
+            spacing={6}
+          >
+            <Grid item xs={6}>
+              <Paper className={classes.algotile}>Algo</Paper>
+            </Grid>
+            <Grid item xs={6}>
+              <Paper className={classes.algotile}>Algo</Paper>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+      {/* <ParticlesBg type={currentAnimation} bg={true} /> */}
+    </>
+  );
+};
+
+export default HomeComponent;

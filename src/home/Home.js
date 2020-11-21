@@ -119,7 +119,10 @@ const HomeComponent = () => {
             >
               Travelling Salesman Problem
             </div>
-            <div className={`${classes.tile} ${classes.tile2}`}>
+            <div
+              className={`${classes.tile} ${classes.tile2}`}
+              onClick={() => history.push("/boids")}
+            >
               Boid's Algorithm
             </div>
           </div>
@@ -127,8 +130,11 @@ const HomeComponent = () => {
             <div className={`${classes.tile} ${classes.tile3}`}>
               Lerchs Grossman Algorithm
             </div>
-            <div className={`${classes.tile} ${classes.tile4}`}>
-              Cryptography
+            <div
+              className={`${classes.tile} ${classes.tile4}`}
+              onClick={() => history.push("/md5")}
+            >
+              MD5 Encryption
             </div>
           </div>
         </div>

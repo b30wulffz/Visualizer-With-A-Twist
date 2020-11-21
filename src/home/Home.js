@@ -127,7 +127,10 @@ const HomeComponent = () => {
             </div>
           </div>
           <div className={classes.tilesPart}>
-            <div className={`${classes.tile} ${classes.tile3}`}>
+            <div
+              className={`${classes.tile} ${classes.tile3}`}
+              onClick={() => history.push("/lg")}
+            >
               Lerchs Grossman Algorithm
             </div>
             <div

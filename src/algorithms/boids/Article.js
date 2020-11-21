@@ -2,6 +2,8 @@ import React from "react";
 import { makeStyles, IconButton } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import HomeIcon from "@material-ui/icons/Home";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 import MoveToTop from "../../components/MoveToTop";
 import BoidsSimulation from "./BoidsSimulation";
@@ -83,11 +85,39 @@ const useStyles = makeStyles((theme) => ({
     background: "#F2F3F4",
     padding: "2px",
   },
+  syntaxBlock: {
+    padding: "10px !important",
+    borderLeft: "5px solid #20DED3", // second color of gradient
+  },
 }));
+
+const CodeBlock = (props) => {
+  const classes = useStyles();
+  return (
+    <SyntaxHighlighter
+      language="javascript"
+      style={docco}
+      wrapLines={true}
+      className={classes.syntaxBlock}
+    >
+      {props.children}
+    </SyntaxHighlighter>
+  );
+};
 
 const H1 = (props) => {
   const classes = useStyles();
   return <h1 className={classes.heading}>{props.children}</h1>;
+};
+
+const H2 = (props) => {
+  const classes = useStyles();
+  return <h2 className={classes.heading}>{props.children}</h2>;
+};
+
+const H3 = (props) => {
+  const classes = useStyles();
+  return <h3 className={classes.heading}>{props.children}</h3>;
 };
 
 const Text = (props) => {
@@ -150,163 +180,278 @@ const ArticleComponent = () => {
           <BoidsSimulation className={classes.simulator} />
         </div>
         <div className={classes.section}>
-          <h1 className={classes.heading}>
-            Curious case of pizza delivery boy
-          </h1>
-          <p className={classes.text}>
-            In a café a group of people were having a chat, when suddenly a
-            pizza delivery boy with a gloomy face enters.
-          </p>
-          <p className={classes.text}>
-            He gets a drink for himself and starts crying out his woes.
-          </p>
-          <p className={classes.text}>
-            He is supposed to perform deliveries to 10 houses, next day, but in
-            order to cut down expenses and increase profit, his company has put
-            up a condition that he must do this in the most efficient way
-            possible. Moreover, he should not go by the same house twice. Hence
-            he will travel the least and reduce fuel costs.
-          </p>
-          <p className={classes.text}>
-            This sounded easy and he accepted it. But when he got back home and
-            started thinking, he couldn’t find a way. Thus, he got stressed, and
-            was thinking of quitting his job.
-          </p>
-          <p className={classes.text}>
-            The group of people chanced to hear this and approached this pizza
-            delivery boy. They promised to help him and sat down to look at this
-            problem.
-          </p>
-          <p className={classes.text}>
-            A person started with an example. He took a map having 4 buildings
-            and distances between them. He said “let’s calculate all the
-            possible paths, and then choose the smallest one”. It was a great
-            idea. They sat down to make all paths and calculated.
-          </p>
-          {/* <ImgDiv src={pizzaImg} caption={"Map of town having 4 buildings"} /> */}
-          <p className={classes.text}>
-            It worked and was not that bad. He actually performed a{" "}
-            <Mark>brute force</Mark> approach to calculate the shortest path.
-            The person who suggested it was happy, and asked the pizza delivery
-            boy to show his map. It was 11 buildings (including pizza shop), so
-            all except one sat down searching across all paths.
-          </p>
-          <p className={classes.text}>Calculating.</p>
-          <p className={classes.text}>Calculating.</p>
-          <p className={classes.text}>
-            <b>And still calculating...</b>
-          </p>
-          <p className={classes.text}>
-            The one person who wasn’t calculating highlighted the issue with
-            this approach. According to him, when it was just 4 buildings, a
-            total of 6 paths were possible. Thus, for 11 buildings, there are 10
-            possibilities from first building, for each 10 there are 9 and for
-            each 9 there are 8.. that is 10*9*8*7*6.. paths and we have to
-            choose the best of them. Hence, the worst possible number of paths
-            for 11 buildings was (11-1)! = 10! i.e. 3628800.
-          </p>
-          <p className={classes.text}>
-            The person said, “You start calculating, By the time you have all
-            paths ready, I guess we’ll have our delivery boy's son doing the
-            delivery. We’d not want that right..”
-          </p>
-          <p className={classes.text}>
-            It was a valid point. That wasn’t a feasible solution. Everyone now
-            turned to the person who showed this problem to help with a
-            solution..
-          </p>
-          <p className={classes.text}>They started looking at the map…</p>
-          <p className={classes.text}>
-            And the person noticed. When you pick any three houses from the map,
-            they form a triangle, and just like Archimedes, he started shouting
-            eureka.
-          </p>
-          <p className={classes.text}>
-            We know that in a triangle sum of two sides is always greater than
-            the third side, This is what we call a{" "}
-            <Mark>triangular inequality</Mark>.
-          </p>
-          <p className={classes.text}>
-            The idea this young man came up with was quite amusing. He was a
-            civil engineer and has recently been working on the shortest
-            possible path to connect all buildings. This he liked to call
-            Minimum Spanning Tree (MST) for which he did the following:
-          </p>
+          <H1>What is Boid's Algorithm?</H1>
+          <Text>
+            Boids is an artificial life program, developed by Craig Reynolds in
+            1986, which simulates the flocking behaviour of birds. The name
+            "boid" corresponds to a shortened version of "bird-oid object",
+            which refers to a bird-like object. Instead of controlling the
+            interactions of an entire flock, however, the Boids simulation only
+            specifies the behavior of each individual bird.
+          </Text>
+          <H3>Swarm Intelligence</H3>
+          <Text>
+            Boids is only one of many experiments in what is known as the field
+            of "swarm intelligence". A key aspect of swarm intelligence systems
+            is the lack of a centralized control agent--instead each individual
+            unit in the swarm follows its own defined rules, sometimes resulting
+            in surprising overall behavior for the group as a whole.
+          </Text>
+          <H3>Features of a basic Boids Algorithm</H3>
+          <Text>
+            As with most artificial life simulations, Boids is an example of
+            emergent behavior; that is, the complexity of Boids arises from the
+            interaction of individual agents (the boids, in this case) adhering
+            to a set of simple rules.
+          </Text>
+          <Text>
+            The Boids program consists of a group of objects (birds) that each
+            have their own position, velocity, and orientation. There are only 3
+            rules which specify the behavior of each bird.
+          </Text>
+          <Text>
+            The rules applied in the simplest Boids world are as follows:
+          </Text>
+          <ul>
+            <li>
+              <b>separation:</b> steer to avoid crowding local flockmates
+            </li>
+            <li>
+              <b>alignment:</b> steer towards the average heading of local
+              flockmates
+            </li>
+            <li>
+              <b>cohesion:</b> steer to move towards the average position
+              (center of mass) of local flockmates
+            </li>
+          </ul>
+          <H3>Usage</H3>
+          <Text>
+            The boids framework is often used in computer graphics, providing
+            realistic-looking representations of flocks of birds and other
+            creatures, such as schools of fish or herds of animals.
+          </Text>
+          <Text>
+            The Boids model can be used for direct control and stabilization of
+            teams of simple Unmanned Ground Vehicles (UGV) or Micro Aerial
+            Vehicles (MAV) in swarm robotics. For stabilization of heterogeneous
+            UAV-UGV teams, the model was adapted for using onboard relative
+            localization by Saska et al.
+          </Text>
+          <Text>
+            It has been applied to automatically program Internet multi-channel
+            radio stations. It has also been used for visualizing information
+            and for optimization tasks.
+          </Text>
+          <H1>Pseudo code</H1>
+          <Text>The boids program has the following structure:</Text>
+          <CodeBlock>
+            {`initialise_positions()
+  
+LOOP
+  draw_boids()
+	move_all_boids_to_new_positions()
+END LOOP`}
+          </CodeBlock>
+          <Text>
+            The initialise_positions() procedure puts all the boids at a
+            starting position. we put them all at random locations off-screen to
+            start with, that way when the simulation starts they all fly in
+            towards the middle of the screen, rather than suddenly appearing in
+            mid-air.
+          </Text>
+          <Text>
+            The draw_boids() procedure simply draws one 'frame' of the
+            animation, with all the boids in their current positions. The
+            procedure we have called move_all_boids_to_new_positions() contains
+            the actual boids algorithm. Note that all it involves is simple
+            vector operations on the positions of the boids. Each of the boids
+            rules works independently, so, for each boid, you calculate how much
+            it will get moved by each of the three rules, giving you three
+            velocity vectors. Then you add those three vectors to the boid's
+            current velocity to work out its new velocity. Interpreting the
+            velocity as how far the boid moves per time step we simply add it to
+            the current position, arriving at the following pseudo-code:
+          </Text>
+          <CodeBlock>
+            {`PROCEDURE move_all_boids_to_new_positions()
+
+  Vector v1, v2, v3
+  Boid b
+
+  FOR EACH BOID b
+    v1 = rule1(b)
+    v2 = rule2(b)
+    v3 = rule3(b)
+
+    b.velocity = b.velocity + v1 + v2 + v3
+    b.position = b.position + b.velocity
+  END
+
+END PROCEDURE`}
+          </CodeBlock>
+          <H3>
+            Rule 1: Boids try to fly towards the centre of mass of neighbouring
+            boids.
+          </H3>
+          <Text>
+            The 'centre of mass' is simply the average position of all the
+            boids. we use the term centre of mass by analogy with the
+            corresponding physical formula (however we ignore individual masses
+            here and treat all boids having the same mass).
+          </Text>
+          <Text>
+            Assume we have N boids, called b[1], b[2], ..., b[N]. Also, the
+            position of a boid b is denoted b.position. Then the 'centre of
+            mass' c of all N boids is given by:
+          </Text>
           <MarkPara>
-            Start from one home (let’s say H1). choose the home which is the
-            nearest (let’s say H2). Now look from both H1 and H2 and see from
-            which home any other unvisited home is nearest. That is, from H1 we
-            have three houses at distance 2, 3, 5 km and from H2 we have 3
-            houses at distance 1, 2, 3 km. We’ll now choose the shortest path
-            i.e. the path with distance 1 km, and now repeat the same with
-            second shortest, third shortest path and so on, such that all houses
-            are chosen, and paths do not form any cycle. This method is also
-            called the <Mark>Prim’s algorithm</Mark>, but this engineer was
-            unaware of its existence and discovered it unknowingly. This helped
-            him create the so-called MST. Now once he had the MST, he had to
-            take care of back-tracking in order to preserve the path. Let’s look
-            at the below MST of a graph.
+            c = (b[1].position + b[2].position + ... + b[N].position) / N
           </MarkPara>
-          {/* <ImgDiv src={mstImg} caption={"A minimum spanning tree"} /> */}
-          <p className={classes.text}>
-            Using this, he wanted to create a shortest path for the delivery
-            boy. The problem now arises with House C.
-          </p>
-          <p className={classes.text}>
-            He goes from A→B→C→D. Now what? Direct path to E isn’t there in MST.
-          </p>
-          <p className={classes.text}>
-            In this case, we create a path from D→E and remove the one from C→E.
-            This is where triangular inequality comes in.
-          </p>
-          <p className={classes.text}>
-            Ideally he had to travel form D→C→E to reach E. But from the
-            inequality it can be concluded, that the length of path from D→E
-            will be lesser than or equal to length of path D→C and C→E combined.
-            And hence,
-          </p>
-          {/* <ImgDiv
-            src={partialHamiltonianFig}
-            caption={"Single path visiting each vertex only once"}
-          /> */}
-          <p className={classes.text}>
-            With this, we now have an approximately shortest path through all
-            houses visiting each only once.
-          </p>
-          <p className={classes.text}>Everyone was amazed by this idea.</p>
-          <p className={classes.text}>
-            Someone raised a doubt: “What if we miss the best solution through
-            this??”
-          </p>
-          <p className={classes.text}>
-            The person replied: “MST is the shortest possible way of traversing
-            each home and there is no way that the actual path we need would be
-            any less than the MST. Hence It is quite reliable. And it might not
-            be the best path but it really is an optimal path.”
-          </p>
-          <p className={classes.text}>
-            Now what we are left with is to reach back, and to do this we just
-            simply go back from the last building(house) to the first
-            building(pizza shop).{" "}
-            <Mark>
-              The resulting path will not be more than twice the length of the
-              actual path.
-            </Mark>{" "}
-            Hence this method is also called{" "}
-            <Mark>2-approximation method.</Mark> The graph generated is also
-            known as a <Mark>Hamiltonian tour</Mark>, as we are starting and
-            finishing at the same vertex, and visiting each vertex exactly once.
-          </p>
-          {/* <ImgDiv src={hamiltonianFig} caption={"Hamiltonian Tour"} /> */}
-          <p className={classes.text}>
-            Everyone was really happy with this, the pizza delivery boy finally
-            had a sigh of relief, and happily headed back. Delivery boy
-            understood how the algorithm works, but being lazy, he did not
-            calculate the actual path.
-          </p>
-          <p className={classes.text}>
-            Could you help him to get the shortest path using the visualizer?
-          </p>
+          <Text>
+            Remember that the positions here are vectors, and N is a scalar.
+          </Text>
+          <Text>
+            {`However, the 'centre of mass' is a property of the entire flock; it is not something that would be considered by an individual boid. we prefer to move the boid toward its 'perceived centre', which is the centre of all the other boids, not including itself. Thus, for boidJ (1 <= J <= N), the perceived centre pc[J] is given by:`}
+          </Text>
+          <MarkPara>
+            pc[J] = (b[1].position + b[2].position + ... + b[J-1].position +
+            b[J+1].position + ... + b[N].position) / (N-1)
+          </MarkPara>
+          <Text>
+            Having calculated the perceived centre, we need to work out how to
+            move the boid towards it. To move it 1% of the way towards the
+            centre (this is about the factor we use) this is given by (pc[J] -
+            b[J].position) / 100.
+          </Text>
+          <Text>Summarising this in pseudocode:</Text>
+          <CodeBlock>
+            {`PROCEDURE rule1(boid b[J])
+
+  Vector pc[J]
+
+  FOR EACH BOID b
+    IF b != b[J] THEN
+      pc[J] = pc[J] + b.position
+    END IF
+  END
+
+  pc[J] = pc[J] / N-1
+
+  RETURN (pc[J] - b[J].position) / 100
+
+END PROCEDURE`}
+          </CodeBlock>
+          <Text>
+            Thus we have calculated the first vector offset, v1, for the boid.
+          </Text>
+          <H3>
+            Rule 2: Boids try to keep a small distance away from other objects
+            (including other boids).
+          </H3>
+          <Text>
+            The purpose of this rule is for boids to make sure they don't
+            collide into each other. we simply look at each boid, and if it's
+            within a defined small distance (say 100 units) of another boid move
+            it as far away again as it already is. This is done by subtracting
+            from a vector c the displacement of each boid which is near by. We
+            initialise c to zero as we want this rule to give us a vector which
+            when added to the current position moves a boid away from those near
+            it.
+          </Text>
+          <Text>In pseudocode:</Text>
+          <CodeBlock>
+            {`PROCEDURE rule2(boid b[J])
+
+  Vector c = 0;
+
+  FOR EACH BOID b
+    IF b != b[J] THEN
+      IF |b.position - b[J].position| < 100 THEN
+        c = c - (b.position - b[J].position)
+      END IF
+    END IF
+  END
+
+  RETURN c
+
+END PROCEDURE`}
+          </CodeBlock>
+          <Text>
+            It may seem odd that we choose to simply double the distance from
+            nearby boids, as it means that boids which are very close are not
+            immediately "repelled". Remember that if two boids are near each
+            other, this rule will be applied to both of them. They will be
+            slightly steered away from each other, and at the next time step if
+            they are still near each other they will be pushed further apart.
+            Hence, the resultant repulsion takes the form of a smooth
+            acceleration. It is a good idea to maintain a principle of ensuring
+            smooth motion. If two boids are very close to each other it's
+            probably because they have been flying very quickly towards each
+            other, considering that their previous motion has also been
+            restrained by this rule. Suddenly jerking them away from each other,
+            such that they each have their motion reversed, would appear
+            unnatural, as if they bounced off each other's invisible force
+            fields. Instead, we have them slow down and accelerate away from
+            each other until they are far enough apart for our liking.
+          </Text>
+          <H3>Rule 3: Boids try to match velocity with near boids.</H3>
+          <Text>
+            This is similar to Rule 1, however instead of averaging the
+            positions of the other boids we average the velocities. We calculate
+            a 'perceived velocity', pv[J], then add a small portion (about an
+            eighth) to the boid's current velocity.
+          </Text>
+          <CodeBlock>
+            {`PROCEDURE rule3(boid b[J])
+
+  Vector pv[J]
+
+  FOR EACH BOID b
+    IF b != b[J] THEN
+      pv[J] = pv[J] + b.velocity
+    END IF
+  END
+
+  pv[J] = pv[J] / N-1
+
+  RETURN (pv[J] - b[J].velocity) / 8
+
+END PROCEDURE`}
+          </CodeBlock>
+          <H1>Real World Implementation</H1>
+          <H3>Spotting Survivors in Disaster prone areas using Drones</H3>
+          <Text>
+            We make use of the boids algorithm in a real world problem posed as:
+          </Text>
+          <Text>
+            It’s 2025, a massive earthquake has rocked a large part of the
+            southern subcontinent of India, leading to a mass wreckage and
+            rendering thousands homeless. Counting casualties and spotting
+            survivors in the area has become difficult due to the vast amount of
+            dust that has risen into the air.{" "}
+          </Text>
+          <Text>
+            As the armed forces come to the rescue aided by NGOs and public
+            fundings, we are desperately searching for a method to spot the
+            survivors and rescue them. The infrared drones do a very good work
+            for spotting these people but the amount of drones needed and the
+            manual control is a major drawback. Resulting in collisions and a
+            further loss in assets.
+          </Text>
+          <Text>
+            On the commander’s demands for a swift and efficient algorithm to
+            avoid these mishaps, one intern came up with the implementation of
+            the Boids algorithm on the drones. Capable of automated flying,
+            these drones would now mimic the behaviour of migratory birds, with
+            the initial requirements of Boids along with an increased
+            functionality of spotting survivors and sending the location using
+            GPS signal to the rescue team.
+          </Text>
+          <Text>
+            In this implementation, we only show the ability of the drones to
+            fly without collision, moving apart and in groups as required.
+          </Text>
         </div>
       </div>
       <MoveToTop />

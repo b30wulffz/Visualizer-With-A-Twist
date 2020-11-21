@@ -25,6 +25,7 @@ import Md5Simulation from "./algorithms/md5/Md5Simulation";
 import Md5Article from "./algorithms/md5/Article";
 import BoidsSimulation from "./algorithms/boids/BoidsSimulation";
 import BoidsArticle from "./algorithms/boids/Article";
+import LGArticle from "./algorithms/lerchsGrossman/Article";
 
 // height: 100vh;
 // width: 100%;
@@ -86,6 +87,9 @@ function App() {
         </Route>
         <Route path="/tsp-sim" exact>
           <TspSimulation />
+        </Route>
+        <Route path="/lg" exact>
+          <LGArticle />
         </Route>
         <Route path="/lg-sim" exact>
           <LGSimulation />

@@ -5,7 +5,7 @@ import { Button, Grid, Paper, ButtonBase } from "@material-ui/core";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 
-import exec from "./LGAlgo";
+import { bf_p1, bf_p2, bf_rnd, mc_p1, mc_p2, mc_rnd } from "./LGAlgo";
 import skyImage from "./sky2.jpg";
 import groundImage from "./ground7.png";
 import playButton from "./playButton2.png";
@@ -110,25 +110,25 @@ const LGSimulation = () => {
   };
 
   useEffect(() => {
-    setAlgo(() => exec);
+    setAlgo(() => bf_rnd);
   }, []);
 
   const handleSubmit = () => {
     if (buttonAlgo === "algo1") {
       if (buttonPreset === "preset1") {
-        setAlgo();
+        setAlgo(() => bf_p1);
       } else if (buttonPreset === "preset2") {
-        setAlgo();
+        setAlgo(() => bf_p2);
       } else {
-        setAlgo();
+        setAlgo(() => bf_rnd);
       }
     } else {
       if (buttonPreset === "preset1") {
-        setAlgo();
+        setAlgo(() => mc_p1);
       } else if (buttonPreset === "preset2") {
-        setAlgo();
+        setAlgo(() => mc_p2);
       } else {
-        setAlgo();
+        setAlgo(() => mc_rnd);
       }
     }
   };
@@ -176,6 +176,7 @@ const LGSimulation = () => {
             variant="contained"
             color="primary"
             style={{ width: "100%", padding: "10px" }}
+            onClick={() => handleSubmit()}
           >
             Set
           </Button>

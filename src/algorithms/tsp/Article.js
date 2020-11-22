@@ -2,9 +2,11 @@ import React from "react";
 import { makeStyles, IconButton } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import HomeIcon from "@material-ui/icons/Home";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
-import TspSimulation from "./TspSimulation";
 import MoveToTop from "../../components/MoveToTop";
+import TspSimulation from "./TspSimulation";
 
 import pizzaImg from "./pizza-fig.svg";
 import mstImg from "./mst-fig.svg";
@@ -83,7 +85,25 @@ const useStyles = makeStyles((theme) => ({
     background: "#F2F3F4",
     padding: "2px",
   },
+  syntaxBlock: {
+    padding: "10px !important",
+    borderLeft: "5px solid #20DED3", // second color of gradient
+  },
 }));
+
+const CodeBlock = (props) => {
+  const classes = useStyles();
+  return (
+    <SyntaxHighlighter
+      language="javascript"
+      style={docco}
+      wrapLines={true}
+      className={classes.syntaxBlock}
+    >
+      {props.children}
+    </SyntaxHighlighter>
+  );
+};
 
 const Mark = (props) => {
   const classes = useStyles();
@@ -290,6 +310,22 @@ const ArticleComponent = () => {
             finishing at the same vertex, and visiting each vertex exactly once.
           </p>
           <ImgDiv src={hamiltonianFig} caption={"Hamiltonian Tour"} />
+          <CodeBlock>
+            {`PROCEDURE ApproximationTSP():
+
+  Vertex: v
+  Distance: w
+  Graph: G(v,w)
+
+  k = MinimumSpanningTree(G)
+  t = PreorderTravesal(k)
+  u = RemoveDuplicateVertices(t)
+  v = JoinAllAdjacentVertices(u)
+  cycle = JoinLastVertexToFirst(v)
+  return cycle
+
+END PROCEDURE`}
+          </CodeBlock>
           <p className={classes.text}>
             Everyone was really happy with this, the pizza delivery boy finally
             had a sigh of relief, and happily headed back. Delivery boy

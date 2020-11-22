@@ -129,9 +129,9 @@ const HomeComponent = () => {
           <div className={classes.tilesPart}>
             <div
               className={`${classes.tile} ${classes.tile3}`}
-              onClick={() => history.push("/lg")}
+              onClick={() => history.push("/opm")}
             >
-              Lerchs Grossman Algorithm
+              Optimal Pit Mining
             </div>
             <div
               className={`${classes.tile} ${classes.tile4}`}

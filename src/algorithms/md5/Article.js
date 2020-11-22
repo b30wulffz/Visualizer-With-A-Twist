@@ -2,11 +2,13 @@ import React from "react";
 import { makeStyles, IconButton } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import HomeIcon from "@material-ui/icons/Home";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 import MoveToTop from "../../components/MoveToTop";
 import Md5Simulation from "./Md5Simulation";
 
-// import pizzaImg from "./pizza-fig.svg";
+import md5ProcessingImg from "./md5ProcessingFig.png";
 // import mstImg from "./mst-fig.svg";
 // import partialHamiltonianFig from "./partial-hamiltonian-fig.svg";
 // import hamiltonianFig from "./hamiltonian-fig.svg";
@@ -83,16 +85,63 @@ const useStyles = makeStyles((theme) => ({
     background: "#F2F3F4",
     padding: "2px",
   },
+  syntaxBlock: {
+    padding: "10px !important",
+    borderLeft: "5px solid #20DED3", // second color of gradient
+  },
+  centerText: {
+    display: "flex",
+    justifyContent: "center",
+  },
+  monospaceText: {
+    fontFamily: "'Lucida Console', monospace",
+  },
 }));
+
+const CodeBlock = (props) => {
+  const classes = useStyles();
+  return (
+    <SyntaxHighlighter
+      language="javascript"
+      style={docco}
+      wrapLines={true}
+      className={classes.syntaxBlock}
+    >
+      {props.children}
+    </SyntaxHighlighter>
+  );
+};
 
 const H1 = (props) => {
   const classes = useStyles();
   return <h1 className={classes.heading}>{props.children}</h1>;
 };
 
+const H2 = (props) => {
+  const classes = useStyles();
+  return <h2 className={classes.heading}>{props.children}</h2>;
+};
+
+const H3 = (props) => {
+  const classes = useStyles();
+  return <h3 className={classes.heading}>{props.children}</h3>;
+};
+
 const Text = (props) => {
   const classes = useStyles();
   return <p className={classes.text}>{props.children}</p>;
+};
+
+const CenterText = (props) => {
+  const classes = useStyles();
+  return (
+    <p className={`${classes.centerText} ${classes.text}`}>{props.children}</p>
+  );
+};
+
+const MonospaceText = (props) => {
+  const classes = useStyles();
+  return <p className={classes.monospaceText}>{props.children}</p>;
 };
 
 const Mark = (props) => {
@@ -113,7 +162,11 @@ const ImgDiv = (props) => {
   const classes = useStyles();
   return (
     <div className={classes.articleImageContainer}>
-      <img src={props.src} className={classes.articleImage} />
+      <img
+        src={props.src}
+        className={classes.articleImage}
+        style={props.maxHeight ? { maxHeight: props.maxHeight } : null}
+      />
       {props.caption ? (
         <p className={classes.articleImageCaption}>{props.caption}</p>
       ) : null}
@@ -149,163 +202,223 @@ const ArticleComponent = () => {
           <Md5Simulation className={classes.simulator} />
         </div>
         <div className={classes.section}>
-          <h1 className={classes.heading}>
-            Curious case of pizza delivery boy
-          </h1>
-          <p className={classes.text}>
-            In a café a group of people were having a chat, when suddenly a
-            pizza delivery boy with a gloomy face enters.
-          </p>
-          <p className={classes.text}>
-            He gets a drink for himself and starts crying out his woes.
-          </p>
-          <p className={classes.text}>
-            He is supposed to perform deliveries to 10 houses, next day, but in
-            order to cut down expenses and increase profit, his company has put
-            up a condition that he must do this in the most efficient way
-            possible. Moreover, he should not go by the same house twice. Hence
-            he will travel the least and reduce fuel costs.
-          </p>
-          <p className={classes.text}>
-            This sounded easy and he accepted it. But when he got back home and
-            started thinking, he couldn’t find a way. Thus, he got stressed, and
-            was thinking of quitting his job.
-          </p>
-          <p className={classes.text}>
-            The group of people chanced to hear this and approached this pizza
-            delivery boy. They promised to help him and sat down to look at this
-            problem.
-          </p>
-          <p className={classes.text}>
-            A person started with an example. He took a map having 4 buildings
-            and distances between them. He said “let’s calculate all the
-            possible paths, and then choose the smallest one”. It was a great
-            idea. They sat down to make all paths and calculated.
-          </p>
-          {/* <ImgDiv src={pizzaImg} caption={"Map of town having 4 buildings"} /> */}
-          <p className={classes.text}>
-            It worked and was not that bad. He actually performed a{" "}
-            <Mark>brute force</Mark> approach to calculate the shortest path.
-            The person who suggested it was happy, and asked the pizza delivery
-            boy to show his map. It was 11 buildings (including pizza shop), so
-            all except one sat down searching across all paths.
-          </p>
-          <p className={classes.text}>Calculating.</p>
-          <p className={classes.text}>Calculating.</p>
-          <p className={classes.text}>
-            <b>And still calculating...</b>
-          </p>
-          <p className={classes.text}>
-            The one person who wasn’t calculating highlighted the issue with
-            this approach. According to him, when it was just 4 buildings, a
-            total of 6 paths were possible. Thus, for 11 buildings, there are 10
-            possibilities from first building, for each 10 there are 9 and for
-            each 9 there are 8.. that is 10*9*8*7*6.. paths and we have to
-            choose the best of them. Hence, the worst possible number of paths
-            for 11 buildings was (11-1)! = 10! i.e. 3628800.
-          </p>
-          <p className={classes.text}>
-            The person said, “You start calculating, By the time you have all
-            paths ready, I guess we’ll have our delivery boy's son doing the
-            delivery. We’d not want that right..”
-          </p>
-          <p className={classes.text}>
-            It was a valid point. That wasn’t a feasible solution. Everyone now
-            turned to the person who showed this problem to help with a
-            solution..
-          </p>
-          <p className={classes.text}>They started looking at the map…</p>
-          <p className={classes.text}>
-            And the person noticed. When you pick any three houses from the map,
-            they form a triangle, and just like Archimedes, he started shouting
-            eureka.
-          </p>
-          <p className={classes.text}>
-            We know that in a triangle sum of two sides is always greater than
-            the third side, This is what we call a{" "}
-            <Mark>triangular inequality</Mark>.
-          </p>
-          <p className={classes.text}>
-            The idea this young man came up with was quite amusing. He was a
-            civil engineer and has recently been working on the shortest
-            possible path to connect all buildings. This he liked to call
-            Minimum Spanning Tree (MST) for which he did the following:
-          </p>
+          <H1>Aditya vs Hackers</H1>
+          <Text>
+            Aditya works as CEO for a software company that releases newer
+            versions of their software frequently.
+          </Text>
+          <Text>
+            Most of these files aren't in human-readable format and are binary
+            files. But there are some notorious people who clone these files,
+            change them, and introduce malware. Then they upload these corrupted
+            files on a domain similar to that of the original and steal data
+            from the individuals who download and use them. Thus, this is
+            hampering the image of the company.
+          </Text>
+          <Text>
+            Aditya wants to overcome the problem with a simple solution. He
+            thinks and comes up with an idea of displaying MD5 hashes of the
+            original software on the website. But how will this help him
+            overcome the issue? Lets see.
+          </Text>
+          <H1>Cryptography</H1>
+          <Text>
+            Cryptography is a method of protecting information and
+            communications through the use of codes, so that only those for whom
+            the information is intended can read and process it. More generally,
+            cryptography is about constructing and analyzing protocols that
+            prevent third parties or the public from reading private messages;
+            various aspects in information security such as data
+            confidentiality, data integrity, authentication, and non-repudiation
+            are central to modern cryptography.
+          </Text>
+          <H3>Encryption</H3>
+          <Text>
+            In cryptography, encryption is the process of encoding information.
+            This process converts the original representation of the
+            information, known as plaintext, into an alternative form known as
+            ciphertext. Ideally, only authorized parties can decipher a
+            ciphertext back to plaintext and access the original information
+          </Text>
+          <H3>Decryption</H3>
+          <Text>
+            The conversion of encrypted data into its original form is called
+            Decryption. It is generally a reverse process of encryption. It
+            decodes the encrypted information so that an authorized user can
+            only decrypt the data because decryption requires a secret key or
+            password.
+          </Text>
+          <H3>Hash Function</H3>
+          <Text>
+            A hash function is any function that can be used to map data of
+            arbitrary size to fixed-size values. The values returned by a hash
+            function are called hash values.
+          </Text>
+          <Text>
+            The values are used to index a fixed-size table called a hash table.
+            Use of a hash function to index a hash table is called hashing. A
+            hash function takes an input as a key, which is associated with a
+            datum or record and used to identify it to the data storage and
+            retrieval application. The keys may be fixed length, like an
+            integer, or variable length, like a name. The output is a hash code
+            used to index a hash table holding the data or records, or pointers
+            to them.
+          </Text>
+          <H1>MD5</H1>
+          <Text>
+            The MD5 hashing algorithm is a one-way cryptographic function that
+            accepts a message of any length as input and returns as output a
+            fixed-length digest value to be used for authenticating the original
+            message.The output is generally 128 bit hash value. It can be used
+            as a checksum to verify data integrity, but only against
+            unintentional corruption.
+          </Text>
+          <H3>How does it work?</H3>
+          <Text>
+            MD5 takes in the input message and converts it into bits.The input
+            message is broken up into chunks of 512-bit blocks (sixteen 32-bit
+            words).The message is then padded to make it 448 % 512 bits long.The
+            padding works as follows: first a single bit, 1, is appended to the
+            end of the message. This is followed by as many zeros as are
+            required to bring the length of the message up to 64 bits fewer than
+            a multiple of 512. After that, a 64 bit value representing the
+            original message is added.
+          </Text>
+          <Text>
+            A 128 bit buffer is used to store the intermediate and final result
+            of the hash function. The 128 bit buffer is implemented using 4
+            registers of 32 bit each. The registers are initialised with the
+            following values:
+            <MarkPara>
+              A = 1732584193 <br />
+              B = -271733879 <br />
+              C = -1732584194 <br />D = 271733878
+            </MarkPara>
+          </Text>
+          <Text>
+            We first define four auxiliary functions that each take as input
+            three 32-bit words and produce as output one 32-bit word.
+            <MarkPara>
+              F(X, Y, Z) = XY v X'Z <br />
+              G(X, Y, Z) = XZ v YZ' <br />
+              H(X, Y, Z) = X xor Y xor Z <br />
+              I(X, Y, Z) = Y xor (X v Z')
+            </MarkPara>
+          </Text>
+          <Text>
+            In each bit position F acts as a conditional: if X then Y else Z.
+          </Text>
+          <Text>
+            The functions G, H, and I are similar to the function F, in that
+            they act in "bitwise parallel" to produce their output from the bits
+            of X, Y, and Z, in such a manner that if the corresponding bits of
+            X, Y, and Z are independent and unbiased, then each bit of G(X, Y
+            ,Z), H(X, Y, Z), and I(X, Y, Z) will be independent and unbiased.
+            Note that the function H is the bitwise "xor" or "parity" function
+            of its inputs.
+          </Text>
+          <Text>Now the message is passed in blocks of 512 bits.</Text>
+          <ImgDiv
+            src={md5ProcessingImg}
+            caption={
+              "MD5 processing of a single 512-bit block [MD5 compression function]"
+            }
+            maxHeight={"800px"}
+          />
+          <Text>
+            After all the 512 bit chunks are processed, a 128 bit message digest
+            is produced, which is a function of all the bits of the input
+            message.
+          </Text>
+          <Text>
+            To produce the MD5 digest, we just need to sum A, B, C and D and
+            convert it to hexadecimal.
+          </Text>
+          <H1>Applications</H1>
+          <Text>
+            MD5 digests have been widely used in the software world to provide
+            some assurance that a transferred file has arrived intact. For
+            example, file servers often provide a pre-computed MD5 (known as
+            md5sum) checksum for the files, so that a user can compare the
+            checksum of the downloaded file to it. Most unix-based operating
+            systems include MD5 sum utilities in their distribution packages.
+          </Text>
           <MarkPara>
-            Start from one home (let’s say H1). choose the home which is the
-            nearest (let’s say H2). Now look from both H1 and H2 and see from
-            which home any other unvisited home is nearest. That is, from H1 we
-            have three houses at distance 2, 3, 5 km and from H2 we have 3
-            houses at distance 1, 2, 3 km. We’ll now choose the shortest path
-            i.e. the path with distance 1 km, and now repeat the same with
-            second shortest, third shortest path and so on, such that all houses
-            are chosen, and paths do not form any cycle. This method is also
-            called the <Mark>Prim’s algorithm</Mark>, but this engineer was
-            unaware of its existence and discovered it unknowingly. This helped
-            him create the so-called MST. Now once he had the MST, he had to
-            take care of back-tracking in order to preserve the path. Let’s look
-            at the below MST of a graph.
+            There always exists a unique MD5 checksum for every file. Thus, if a
+            file gets modified, MD5 checksum will change. Aditya knows about
+            this concept, and hence he is displaying this unique MD5 checksum of
+            the software on his website. This would help his clients to
+            differentiate between original and corrupted files, and thus would
+            save the image of his company.
           </MarkPara>
-          {/* <ImgDiv src={mstImg} caption={"A minimum spanning tree"} /> */}
-          <p className={classes.text}>
-            Using this, he wanted to create a shortest path for the delivery
-            boy. The problem now arises with House C.
-          </p>
-          <p className={classes.text}>
-            He goes from A→B→C→D. Now what? Direct path to E isn’t there in MST.
-          </p>
-          <p className={classes.text}>
-            In this case, we create a path from D→E and remove the one from C→E.
-            This is where triangular inequality comes in.
-          </p>
-          <p className={classes.text}>
-            Ideally he had to travel form D→C→E to reach E. But from the
-            inequality it can be concluded, that the length of path from D→E
-            will be lesser than or equal to length of path D→C and C→E combined.
-            And hence,
-          </p>
-          {/* <ImgDiv
-            src={partialHamiltonianFig}
-            caption={"Single path visiting each vertex only once"}
-          /> */}
-          <p className={classes.text}>
-            With this, we now have an approximately shortest path through all
-            houses visiting each only once.
-          </p>
-          <p className={classes.text}>Everyone was amazed by this idea.</p>
-          <p className={classes.text}>
-            Someone raised a doubt: “What if we miss the best solution through
-            this??”
-          </p>
-          <p className={classes.text}>
-            The person replied: “MST is the shortest possible way of traversing
-            each home and there is no way that the actual path we need would be
-            any less than the MST. Hence It is quite reliable. And it might not
-            be the best path but it really is an optimal path.”
-          </p>
-          <p className={classes.text}>
-            Now what we are left with is to reach back, and to do this we just
-            simply go back from the last building(house) to the first
-            building(pizza shop).{" "}
-            <Mark>
-              The resulting path will not be more than twice the length of the
-              actual path.
-            </Mark>{" "}
-            Hence this method is also called{" "}
-            <Mark>2-approximation method.</Mark> The graph generated is also
-            known as a <Mark>Hamiltonian tour</Mark>, as we are starting and
-            finishing at the same vertex, and visiting each vertex exactly once.
-          </p>
-          {/* <ImgDiv src={hamiltonianFig} caption={"Hamiltonian Tour"} /> */}
-          <p className={classes.text}>
-            Everyone was really happy with this, the pizza delivery boy finally
-            had a sigh of relief, and happily headed back. Delivery boy
-            understood how the algorithm works, but being lazy, he did not
-            calculate the actual path.
-          </p>
-          <p className={classes.text}>
-            Could you help him to get the shortest path using the visualizer?
-          </p>
+          <H1>Security issues</H1>
+          <Text>
+            As it is easy to generate MD5 collisions, it is possible for the
+            person who created the file to create a second file with the same
+            checksum, so this technique cannot protect against some forms of
+            malicious tampering.
+          </Text>
+          <H3>Collision attack</H3>
+          <Text>
+            Find two different messages m1 and m2 such that{" "}
+            <Mark>hash(m1) = hash(m2)</Mark>.
+          </Text>
+          <Text>
+            An example MD5 collision, with the two messages differing in 6 bits,
+            is:
+          </Text>
+          <MarkPara>
+            <b>Message 1</b>
+            <MonospaceText>
+              d131dd02c5e6eec4 693d9a0698aff95c 2fcab5<Mark>8</Mark>712467eab
+              4004583eb8fb7f89
+              <br />
+              55ad340609f4b302 83e4888325<Mark>7</Mark>1415a 085125e8f7cdc99f
+              d91dbd<Mark>f</Mark>280373c5b
+              <br />
+              d8823e3156348f5b ae6dacd436c919c6 dd53e2<Mark>b</Mark>487da03fd
+              02396306d248cda0
+              <br />
+              e99f33420f577ee8 ce54b67080<Mark>a</Mark>80d1e c69821bcb6a88393
+              96f965<Mark>2</Mark>b6ff72a70
+            </MonospaceText>
+          </MarkPara>
+          <MarkPara>
+            <b>Message 2</b>
+            <MonospaceText>
+              d131dd02c5e6eec4 693d9a0698aff95c 2fcab5<Mark>0</Mark>712467eab
+              4004583eb8fb7f89
+              <br />
+              55ad340609f4b302 83e4888325<Mark>f</Mark>1415a 085125e8f7cdc99f
+              d91dbd<Mark>7</Mark>280373c5b
+              <br />
+              d8823e3156348f5b ae6dacd436c919c6 dd53e2<Mark>3</Mark>487da03fd
+              02396306d248cda0
+              <br />
+              e99f33420f577ee8 ce54b67080<Mark>2</Mark>80d1e c69821bcb6a88393
+              96f965<Mark>a</Mark>b6ff72a70
+            </MonospaceText>
+          </MarkPara>
+          <Text>
+            Both produce the MD5 hash{" "}
+            <Mark>79054025255fb1a26e4bc422aef54eb4</Mark>. The difference
+            between the two samples is that the leading bit in each nibble has
+            been flipped. For example, the 20th byte (offset 0x13) in the top
+            sample, 0x87, is 10000111 in binary. The leading bit in the byte
+            (also the leading bit in the first nibble) is flipped to make
+            00000111, which is 0x07, as shown in the lower sample.
+          </Text>
+          <Text>
+            So if two prefixes with the same hash can be constructed, a common
+            suffix can be added to both to make the collision more likely to be
+            accepted as valid data by the application using it. Furthermore,
+            current collision-finding techniques allow to specify an arbitrary
+            prefix: an attacker can create two colliding files that both begin
+            with the same content. All the attacker needs to generate two
+            colliding files is a template file with a 128-byte block of data,
+            aligned on a 64-byte boundary that can be changed freely by the
+            collision-finding algorithm.
+          </Text>
         </div>
       </div>
       <MoveToTop />

@@ -211,20 +211,20 @@ const ArticleComponent = () => {
           </Text>
           <Text>
             The rules applied in the simplest Boids world are as follows:
+            <ul>
+              <li>
+                <b>separation:</b> steer to avoid crowding local flockmates
+              </li>
+              <li>
+                <b>alignment:</b> steer towards the average heading of local
+                flockmates
+              </li>
+              <li>
+                <b>cohesion:</b> steer to move towards the average position
+                (center of mass) of local flockmates
+              </li>
+            </ul>
           </Text>
-          <ul>
-            <li>
-              <b>separation:</b> steer to avoid crowding local flockmates
-            </li>
-            <li>
-              <b>alignment:</b> steer towards the average heading of local
-              flockmates
-            </li>
-            <li>
-              <b>cohesion:</b> steer to move towards the average position
-              (center of mass) of local flockmates
-            </li>
-          </ul>
           <H3>Usage</H3>
           <Text>
             The boids framework is often used in computer graphics, providing

@@ -87,7 +87,7 @@ const useStyles = makeStyles((theme) => ({
   },
   syntaxBlock: {
     padding: "10px !important",
-    borderLeft: "5px solid #20DED3", // second color of gradient
+    borderLeft: "5px solid #f64848", // second color of gradient
   },
 }));
 

@@ -169,7 +169,7 @@ const ArticleComponent = () => {
           <HomeIcon />
         </IconButton>
 
-        <h1 className={classes.title}>Lerchs Grossman Algorithm</h1>
+        <h1 className={classes.title}>Optimal Pit Mining</h1>
       </div>
       <div className={classes.body}>
         <div className={classes.section}>
